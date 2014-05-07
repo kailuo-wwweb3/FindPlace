@@ -34,13 +34,17 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// setContentView(R.layout.activity_main);
 		this.venueCards = new ArrayList<Card>();
-		Log.e("a", "getting here");
+		mCardScrollView = new CardScrollView(this);
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		startActivityForResult(intent, SPEECH_REQUEST);
 		mAdapter = new VenueCardScrollViewAdapter();
 		mCardScrollView.setAdapter(mAdapter);
-		System.out.println("df");
+		mCardScrollView.activate();
+		setContentView(mCardScrollView);
+		Log.e("bb", "getting here");
+
 	}
 
 	@Override
@@ -50,11 +54,11 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	private void updateCardScrollView(List<Venue> result) {
 		// TODO Auto-generated method stub
 		this.venueCards.clear();
-		for (Venue venue: result) {
+		for (Venue venue : result) {
 			Card newCard = new Card(this);
 			newCard.setText(venue.getName());
 			this.venueCards.add(newCard);
@@ -66,7 +70,8 @@ public class MainActivity extends Activity {
 		if (requestCode == SPEECH_REQUEST && resultCode == RESULT_OK) {
 			List<String> results = data
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-			String spokenText = results.get(1);
+			String spokenText = results.get(0);
+			spokenText = spokenText.split(" ")[1];
 			String url = "https://api.foursquare.com/v2/venues/search"
 					+ "?client_id=ORXSWCXK1RFANFOWLDEFGGIB0ZERUON4E3UVHB2N4FMLDVIQ"
 					+ "&client_secret=S3NG3EADI320BITTFBSLYNSD5C4JEZLLOUWRJG5RN2EHXLMR"
@@ -158,7 +163,7 @@ public class MainActivity extends Activity {
 			}
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(List<Venue> result) {
 			updateCardScrollView(result);
