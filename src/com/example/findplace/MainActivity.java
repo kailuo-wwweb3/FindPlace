@@ -148,7 +148,7 @@ public class MainActivity extends Activity {
 			JsonNetworkAdapter jsonNetworkAdapter = new JsonNetworkAdapter();
 			JSONObject response = jsonNetworkAdapter.getJsonData(url);
 			try {
-				JSONArray venueArray = response.getJSONArray("venues");
+				JSONArray venueArray = ((JSONObject)response.get("response")).getJSONArray("venues");
 				ArrayList<Venue> venues = new ArrayList<Venue>();
 				for (int i = 0; i < venueArray.length(); i++) {
 					JSONObject venueObject = venueArray.getJSONObject(i);
