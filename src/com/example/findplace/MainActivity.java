@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
 		for (Venue venue : result) {
 			Card newCard = new Card(this);
 			newCard.setText(venue.getName());
+			
 			this.venueCards.add(newCard);
 		}
 	}
